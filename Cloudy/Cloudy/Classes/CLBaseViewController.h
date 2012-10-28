@@ -7,10 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CLDictionaryConvertor.h"
-#import "DropboxSDK.h"
+#import <DropboxSDK/DropboxSDK.h>
 #import "LiveConnectClient.h"
+#import "CLDictionaryConvertor.h"
+#import "CLCacheManager.h"
+
+@class AppDelegate;
 
 @interface CLBaseViewController : UIViewController
+{
+    __unsafe_unretained AppDelegate *appDelegate;
+}
+
+@property (nonatomic,unsafe_unretained)AppDelegate *appDelegate;
 
 @end

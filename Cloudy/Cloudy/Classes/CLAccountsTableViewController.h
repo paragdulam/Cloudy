@@ -7,10 +7,25 @@
 //
 
 #import "CLBaseViewController.h"
+#import "AppDelegate.h"
+#import "CLBrowserTableViewController.h"
+#import "Constants.h"
 
-@interface CLAccountsTableViewController : CLBaseViewController<UITableViewDataSource,UITableViewDelegate>
+@interface CLAccountsTableViewController : CLBaseViewController<UITableViewDataSource,UITableViewDelegate,LiveAuthDelegate,LiveOperationDelegate,DBRestClientDelegate>
 {
     UITableView *accountsTableView;
     NSMutableArray *accounts;
+    DBRestClient *restClient;
+    UIActivityIndicatorView *activityIndicator;
+    UIButton *editButton;
 }
+
+-(void)authenticationDoneForSession:(DBSession *)session;
+-(void)  authenticationCancelledManuallyForSession:(DBSession *) session;
+-(void) performTableViewAnimationForIndexPath:(NSIndexPath *) indexPath;
+-(void) showRootViewController:(VIEW_TYPE) type;
+-(void) startAnimating;
+-(void) stopAnimating;
+
+
 @end

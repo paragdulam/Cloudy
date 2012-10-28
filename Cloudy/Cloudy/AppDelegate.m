@@ -9,6 +9,30 @@
 #import "AppDelegate.h"
 
 @implementation AppDelegate
+@synthesize dropboxSession;
+@synthesize liveConnectClient;
+@synthesize callBackViewController;
+
+-(BOOL) application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            //auth Done
+            if (![[[[url absoluteString] componentsSeparatedByString:@"/"] lastObject] isEqualToString:@"cancel"]) {
+                [callBackViewController authenticationDoneForSession:[DBSession sharedSession]];
+                return YES;
+            } else {
+                [callBackViewController authenticationCancelledManuallyForSession:[DBSession sharedSession]];
+                return NO;
+            }
+        }
+    }
+    return NO;
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -21,12 +45,26 @@
     CLAccountsTableViewController *leftbaseViewController = [[CLAccountsTableViewController alloc] init];
     UINavigationController *leftNavController = [[UINavigationController alloc] initWithRootViewController:leftbaseViewController];
     
-    CLBaseViewController *rootbaseViewController = [[CLBaseViewController alloc] init];
+    CLBrowserTableViewController *rootbaseViewController = [[CLBrowserTableViewController alloc] init];
     UINavigationController *rootNavController = [[UINavigationController alloc] initWithRootViewController:rootbaseViewController];
 
     menuController.leftViewController = leftNavController;
     menuController.rootViewController = rootNavController;
     self.window.rootViewController = menuController;
+    
+    
+    DBSession *session = [[DBSession alloc] initWithAppKey:DROPBOX_APP_KEY
+                                                 appSecret:DROPBOX_APP_SECRET_KEY
+                                                      root:kDBRootDropbox];
+    session.delegate = self;
+    self.dropboxSession = session;
+    [DBSession setSharedSession:dropboxSession];
+    
+    LiveConnectClient *client = [[LiveConnectClient alloc] initWithClientId:SKYDRIVE_CLIENT_ID delegate:self];
+    self.liveConnectClient = client;
+    
+    [CLCacheManager initialSetup];
+
     return YES;
 }
 
@@ -56,5 +94,31 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+#pragma mark - DBSessionDelegate
+
+- (void)sessionDidReceiveAuthorizationFailure:(DBSession *)session userId:(NSString *)userId
+{
+    
+}
+
+
+#pragma mark - LiveAuthDelegate
+
+
+- (void) authCompleted: (LiveConnectSessionStatus) status
+               session: (LiveConnectSession *) session
+             userState: (id) userState
+{
+    NSLog(@"authCompleted");
+}
+
+// This is invoked when the original method call fails.
+- (void) authFailed: (NSError *) error
+          userState: (id)userState
+{
+    NSLog(@"authFailed");
+}
+
 
 @end

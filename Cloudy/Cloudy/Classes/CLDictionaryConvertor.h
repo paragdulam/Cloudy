@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <DropboxSDK/DropboxSDK.h>
+#import "Constants.h"
 
 @interface CLDictionaryConvertor : NSObject
+
++(NSDictionary *) dictionaryFromAccountInfo:(id) info;
++(NSDictionary *) dictionaryFromMetadata:(DBMetadata *) metadata;
 
 @end

@@ -28,6 +28,7 @@
 
 - (id)initWithDictionary:(NSDictionary*)dict;
 
+
 @property (nonatomic, readonly) BOOL thumbnailExists;
 @property (nonatomic, readonly) long long totalBytes;
 @property (nonatomic, readonly) NSDate* lastModifiedDate;
@@ -43,5 +44,7 @@
 @property (nonatomic, readonly) NSString* rev;
 @property (nonatomic, readonly) BOOL isDeleted;
 @property (nonatomic, readonly) NSString* filename;
+
+
 
 @end

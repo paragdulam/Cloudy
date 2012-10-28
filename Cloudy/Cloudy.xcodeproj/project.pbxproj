@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F1684846163D2AA300D2A34D /* CLFIleDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F1684845163D2AA200D2A34D /* CLFIleDetailsView.m */; };
+		F1684848163D313600D2A34D /* cell_background.png in Resources */ = {isa = PBXBuildFile; fileRef = F1684847163D313600D2A34D /* cell_background.png */; };
+		F168484A163D34AB00D2A34D /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = F1684849163D34AB00D2A34D /* folder.png */; };
+		F18F10B716385BBE008AD713 /* CLCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F18F10B616385BBE008AD713 /* CLCacheManager.m */; };
+		F1B4FDFC1639BF6D009CCD35 /* CLWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1B4FDFB1639BF6D009CCD35 /* CLWebViewController.m */; };
 		F1BD892A1636A3E400DD93B3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BD89291636A3E400DD93B3 /* UIKit.framework */; };
 		F1BD892C1636A3E400DD93B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BD892B1636A3E400DD93B3 /* Foundation.framework */; };
 		F1BD892E1636A3E400DD93B3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BD892D1636A3E400DD93B3 /* CoreGraphics.framework */; };
@@ -50,6 +55,7 @@
 		F1BD8A0A1636C7EA00DD93B3 /* LiveOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BD89EC1636C7EA00DD93B3 /* LiveOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F1BD8A0B1636C7EA00DD93B3 /* LiveOperationProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BD89EF1636C7EA00DD93B3 /* LiveOperationProgress.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F1BD8A0C1636C7EA00DD93B3 /* backArrow_black.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BD89F31636C7EA00DD93B3 /* backArrow_black.png */; };
+		F1CAC29B163BE291006976CB /* CLBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F1CAC29A163BE291006976CB /* CLBrowserCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +83,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F1684844163D2AA200D2A34D /* CLFIleDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLFIleDetailsView.h; sourceTree = "<group>"; };
+		F1684845163D2AA200D2A34D /* CLFIleDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLFIleDetailsView.m; sourceTree = "<group>"; };
+		F1684847163D313600D2A34D /* cell_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cell_background.png; sourceTree = "<group>"; };
+		F1684849163D34AB00D2A34D /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
+		F18F10B516385BBE008AD713 /* CLCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLCacheManager.h; sourceTree = "<group>"; };
+		F18F10B616385BBE008AD713 /* CLCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLCacheManager.m; sourceTree = "<group>"; };
+		F1B4FDFA1639BF6D009CCD35 /* CLWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLWebViewController.h; sourceTree = "<group>"; };
+		F1B4FDFB1639BF6D009CCD35 /* CLWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLWebViewController.m; sourceTree = "<group>"; };
 		F1BD89251636A3E400DD93B3 /* Cloudy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cloudy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1BD89291636A3E400DD93B3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F1BD892B1636A3E400DD93B3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -161,6 +175,9 @@
 		F1BD89F01636C7EA00DD93B3 /* LiveUploadOperationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveUploadOperationDelegate.h; sourceTree = "<group>"; };
 		F1BD89F11636C7EA00DD93B3 /* LiveUploadOverwriteOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveUploadOverwriteOption.h; sourceTree = "<group>"; };
 		F1BD89F31636C7EA00DD93B3 /* backArrow_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backArrow_black.png; sourceTree = "<group>"; };
+		F1BD8A361636D52400DD93B3 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		F1CAC299163BE291006976CB /* CLBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLBrowserCell.h; sourceTree = "<group>"; };
+		F1CAC29A163BE291006976CB /* CLBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLBrowserCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +234,7 @@
 				F1BD89461636A42500DD93B3 /* Classes */,
 				F1BD89381636A3E500DD93B3 /* AppDelegate.h */,
 				F1BD89391636A3E500DD93B3 /* AppDelegate.m */,
+				F1BD8A361636D52400DD93B3 /* Constants.h */,
 				F1BD89301636A3E500DD93B3 /* Supporting Files */,
 			);
 			path = Cloudy;
@@ -247,6 +265,14 @@
 				F1BD896A1636AE6E00DD93B3 /* CLBrowserTableViewController.m */,
 				F1BD89661636ADE600DD93B3 /* CLDictionaryConvertor.h */,
 				F1BD89671636ADE600DD93B3 /* CLDictionaryConvertor.m */,
+				F18F10B516385BBE008AD713 /* CLCacheManager.h */,
+				F18F10B616385BBE008AD713 /* CLCacheManager.m */,
+				F1B4FDFA1639BF6D009CCD35 /* CLWebViewController.h */,
+				F1B4FDFB1639BF6D009CCD35 /* CLWebViewController.m */,
+				F1CAC299163BE291006976CB /* CLBrowserCell.h */,
+				F1CAC29A163BE291006976CB /* CLBrowserCell.m */,
+				F1684844163D2AA200D2A34D /* CLFIleDetailsView.h */,
+				F1684845163D2AA200D2A34D /* CLFIleDetailsView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -273,6 +299,8 @@
 		F1BD89511636A5DF00DD93B3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F1684849163D34AB00D2A34D /* folder.png */,
+				F1684847163D313600D2A34D /* cell_background.png */,
 				F1BD89521636A5F200DD93B3 /* nav_menu_icon@2x.png */,
 			);
 			path = Resources;
@@ -490,6 +518,8 @@
 				F1BD89FE1636C7EA00DD93B3 /* LiveAuthDialog_iPhone.xib in Resources */,
 				F1BD8A061636C7EA00DD93B3 /* backArrow_black.png in Resources */,
 				F1BD8A0C1636C7EA00DD93B3 /* backArrow_black.png in Resources */,
+				F1684848163D313600D2A34D /* cell_background.png in Resources */,
+				F168484A163D34AB00D2A34D /* folder.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,6 +558,10 @@
 				F1BD8A091636C7EA00DD93B3 /* LiveDownloadOperation.m in Sources */,
 				F1BD8A0A1636C7EA00DD93B3 /* LiveOperation.m in Sources */,
 				F1BD8A0B1636C7EA00DD93B3 /* LiveOperationProgress.m in Sources */,
+				F18F10B716385BBE008AD713 /* CLCacheManager.m in Sources */,
+				F1B4FDFC1639BF6D009CCD35 /* CLWebViewController.m in Sources */,
+				F1CAC29B163BE291006976CB /* CLBrowserCell.m in Sources */,
+				F1684846163D2AA300D2A34D /* CLFIleDetailsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

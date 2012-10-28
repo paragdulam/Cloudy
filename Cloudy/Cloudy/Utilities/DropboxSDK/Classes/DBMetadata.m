@@ -68,6 +68,12 @@
     return self;
 }
 
+
+-(NSString *)description{
+    return [NSString stringWithFormat:@"Path %@",self.path];
+}
+
+
 - (void)dealloc {
     [lastModifiedDate release];
     [clientMtime release];

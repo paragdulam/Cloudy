@@ -7,12 +7,19 @@
 //
 
 #import "CLBaseViewController.h"
+#import "AppDelegate.h"
 
 @interface CLBaseViewController ()
 
 @end
 
 @implementation CLBaseViewController
+
+-(AppDelegate *) appDelegate
+{
+    return (AppDelegate *)[[UIApplication sharedApplication ]delegate];
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -28,7 +35,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:30.f/255.f green:30.f/255.f blue:30.f/255.f alpha:1.f];
 }
 
 - (void)didReceiveMemoryWarning

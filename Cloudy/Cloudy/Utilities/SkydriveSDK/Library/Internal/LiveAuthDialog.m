@@ -56,7 +56,7 @@
     [super viewDidLoad];
     
     self.webView.delegate = self;
-    
+    self.title = @"SkyDrive";
     // Override the left button to show a back button
     // which is used to dismiss the modal view    
     UIImage *buttonImage = [LiveAuthHelper getBackButtonImage]; 
