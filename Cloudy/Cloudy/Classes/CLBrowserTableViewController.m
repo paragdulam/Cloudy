@@ -43,17 +43,15 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    browserTableView = [[UITableView alloc] initWithFrame:self.view.bounds
+    CGRect browserTableViewFrame = self.view.bounds;
+    browserTableViewFrame.size.height -= 88.f;
+    browserTableView = [[UITableView alloc] initWithFrame:browserTableViewFrame
                                                     style:UITableViewStylePlain];
     browserTableView.backgroundColor = [UIColor clearColor];
-//    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cellSwiped:)];
-//    swipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-//    [browserTableView addGestureRecognizer:swipeGesture];
-//    swipeGesture.delegate = self;
-    
     browserTableView.dataSource = self;
     browserTableView.delegate = self;
     [self.view addSubview:browserTableView];
+    browserTableView.allowsMultipleSelectionDuringEditing = YES;
     
     tableData = [[NSMutableArray alloc] init];
     
@@ -62,17 +60,226 @@
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [aView addSubview:activityIndicator];
     aView.frame = activityIndicator.frame;
+    
+    editButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [editButton setTitle:@"Edit" forState:UIControlStateNormal];
+    [editButton setTitle:@"Done" forState:UIControlStateSelected];
+    [editButton setBackgroundImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
+    [editButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [editButton addTarget:self
+                   action:@selector(editButtonClicked:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [editButton.titleLabel setFont:[UIFont boldSystemFontOfSize:12.f]];
+    [editButton setFrame:CGRectMake(CGRectGetMaxX(activityIndicator.frame) + 5.f, 0, 50, 30)];
+    [aView addSubview:editButton];
+    [aView setFrame:CGRectMake(0, 0, CGRectGetMaxX(editButton.frame), 30.f)];
+
     activityIndicator.hidesWhenStopped = YES;
+    activityIndicator.center = CGPointMake(activityIndicator.center.x, aView.frame.size.height/2);
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aView];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     browserTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self setInputDictionary:nil];
+    
+    fileOperationsToolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(browserTableViewFrame), 320.f, 44.f)];
+    fileOperationsToolBar.tintColor = [UIColor blackColor];
+    [self.view addSubview:fileOperationsToolBar];
+    
+    [self deSelectEditMode];
+    [self setInputDictionary:inputDictionary];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+
+#pragma mark - Helper Methods
+
+
+-(void) deSelectEditMode
+{
+    editButton.selected = YES;
+    [self editButtonClicked:editButton];
+}
+
+
+
+#pragma mark - UIImagePickerControllerDelegate
+
+
+- (void)agImagePickerController:(AGImagePickerController *)picker
+  didFinishPickingMediaWithInfo:(NSArray *)info
+{
+//    for (ALAsset *asset in info) {
+//        CGImageRef imageRef = [[asset defaultRepresentation] fullResolutionImage];
+//        UIImage *image = [UIImage imageWithCGImage:imageRef];
+//        
+//    }
+    [picker dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
+- (void)agImagePickerController:(AGImagePickerController *)picker
+                        didFail:(NSError *)error
+{
+    [picker dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
+
+#pragma mark - IBActions
+
+-(void) uploadButtonClicked:(UIButton *) btn
+{
+    AGImagePickerController *imagePickerController = [[AGImagePickerController alloc] initWithDelegate:self];
+    [self presentViewController:imagePickerController
+                       animated:YES
+                     completion:^{
+                         
+                     }];
+}
+
+
+-(void) shareButtonClicked:(UIButton *) sender
+{
+    
+}
+
+-(void) copyButtonClicked:(UIButton *) sender
+{
+    
+}
+
+
+-(void) moveButtonClicked:(UIButton *) sender
+{
+    NSMutableDictionary *inpDictionary = [NSMutableDictionary dictionaryWithDictionary:inputDictionary];
+    [inpDictionary setObject:[NSNumber numberWithBool:YES]
+                      forKey:@"HIDE_FILES"];
+
+    CLBrowserTableViewController *browserViewController = [[CLBrowserTableViewController alloc] initWithInputDictionary:inpDictionary];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:browserViewController];
+    [self presentViewController:navController
+                       animated:YES
+                     completion:^{
+                         
+                     }];
+}
+
+-(void) deleteButtonClicked:(UIButton *) sender
+{
+    NSArray *selectedRows = [browserTableView indexPathsForSelectedRows];
+    for (NSIndexPath *indexPath in selectedRows) {
+        NSDictionary *data = [tableData objectAtIndex:indexPath.row];
+        [metaDataRestClient deletePath:[data objectForKey:@"path"]];
+    }
+}
+
+-(void) editButtonClicked:(UIButton *) sender
+{
+    sender.selected = !sender.selected;
+    [browserTableView setEditing:sender.selected animated:YES];
+    
+    NSMutableArray *items = [[NSMutableArray alloc] init];
+    if (!sender.selected) {
+        UIButton *uploadButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        uploadButton.frame = CGRectMake(0, 0, 50, 30);
+        [uploadButton setTitle:@"Upload"
+                      forState:UIControlStateNormal];
+        [uploadButton setTitleColor:[UIColor whiteColor]
+                           forState:UIControlStateNormal];
+        [uploadButton setBackgroundImage:[UIImage imageNamed:@"editButton.png"]
+                                forState:UIControlStateNormal];
+        [uploadButton.titleLabel setFont:[UIFont boldSystemFontOfSize:12.f]];
+        [uploadButton addTarget:self
+                         action:@selector(uploadButtonClicked:)
+               forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        [items addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+        [items addObject:[[UIBarButtonItem alloc] initWithCustomView:uploadButton]];
+        fileOperationsToolBar.items = items;
+    } else {
+        UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        deleteButton.frame = CGRectMake(0, 0, 50, 30);
+        [deleteButton setTitle:@"Delete"
+                      forState:UIControlStateNormal];
+        [deleteButton setTitleColor:[UIColor whiteColor]
+                           forState:UIControlStateNormal];
+        [deleteButton setBackgroundImage:[UIImage imageNamed:@"editButton.png"]
+                                forState:UIControlStateNormal];
+        [deleteButton.titleLabel setFont:[UIFont boldSystemFontOfSize:12.f]];
+        deleteButton.exclusiveTouch = YES;
+        [deleteButton addTarget:self
+                         action:@selector(deleteButtonClicked:)
+               forControlEvents:UIControlEventTouchUpInside];
+
+        
+        UIButton *moveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        moveButton.frame = CGRectMake(0, 0, 50, 30);
+        [moveButton setTitle:@"Move"
+                      forState:UIControlStateNormal];
+        [moveButton setTitleColor:[UIColor whiteColor]
+                           forState:UIControlStateNormal];
+        [moveButton setBackgroundImage:[UIImage imageNamed:@"editButton.png"]
+                                forState:UIControlStateNormal];
+        [moveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:12.f]];
+        moveButton.exclusiveTouch = YES;
+        [moveButton addTarget:self
+                         action:@selector(moveButtonClicked:)
+               forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        UIButton *copyButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        copyButton.frame = CGRectMake(0, 0, 50, 30);
+        [copyButton setTitle:@"Copy"
+                    forState:UIControlStateNormal];
+        [copyButton setTitleColor:[UIColor whiteColor]
+                         forState:UIControlStateNormal];
+        [copyButton setBackgroundImage:[UIImage imageNamed:@"editButton.png"]
+                              forState:UIControlStateNormal];
+        [copyButton.titleLabel setFont:[UIFont boldSystemFontOfSize:12.f]];
+        copyButton.exclusiveTouch = YES;
+        [copyButton addTarget:self
+                       action:@selector(copyButtonClicked:)
+             forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        shareButton.frame = CGRectMake(0, 0, 50, 30);
+        [shareButton setTitle:@"Share"
+                    forState:UIControlStateNormal];
+        [shareButton setTitleColor:[UIColor whiteColor]
+                         forState:UIControlStateNormal];
+        shareButton.exclusiveTouch = YES;
+        [shareButton setBackgroundImage:[UIImage imageNamed:@"editButton.png"]
+                              forState:UIControlStateNormal];
+        [shareButton.titleLabel setFont:[UIFont boldSystemFontOfSize:12.f]];
+        [shareButton addTarget:self
+                       action:@selector(shareButtonClicked:)
+             forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        
+        [items addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+        [items addObject:[[UIBarButtonItem alloc] initWithCustomView:deleteButton]];
+        [items addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+        
+        [items addObject:[[UIBarButtonItem alloc] initWithCustomView:moveButton]];
+        [items addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+        
+        [items addObject:[[UIBarButtonItem alloc] initWithCustomView:copyButton]];
+        [items addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+        
+        [items addObject:[[UIBarButtonItem alloc] initWithCustomView:shareButton]];
+        [items addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+    }
+    [fileOperationsToolBar setItems:items animated:YES];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -117,16 +324,27 @@
 #pragma mark - DBRestClientDelegate
 
 
-//-(void) readPathsForMetadata:(DBMetadata *)data
-//{
-//    if ([data.contents count]) {
-//        for (DBMetadata *mData in data.contents) {
-//            [self readPathsForMetadata:mData];
-//        }
-//    } else {
-//        NSLog(@"Path %@",data.path);
-//    }
-//}
+#pragma mark - Upload Methods
+
+
+- (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath from:(NSString*)srcPath
+          metadata:(DBMetadata*)metadata
+{
+}
+
+- (void)restClient:(DBRestClient*)client uploadProgress:(CGFloat)progress
+           forFile:(NSString*)destPath from:(NSString*)srcPath
+{
+    
+}
+
+- (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error
+{
+    
+}
+
+
+#pragma mark - Metadata Methods
 
 - (void)restClient:(DBRestClient*)client loadedMetadata:(DBMetadata*)metadata
 {
@@ -164,6 +382,8 @@
 }
 
 
+#pragma mark - Image ThumbNail Methods
+
 - (void)restClient:(DBRestClient*)client loadedThumbnail:(NSString*)destPath metadata:(DBMetadata*)metadata
 {
     [browserTableView reloadData];
@@ -174,6 +394,20 @@
 {
     [activityIndicator stopAnimating];
 }
+
+
+#pragma mark - Deletion Methods
+
+- (void)restClient:(DBRestClient*)client deletedPath:(NSString *)path
+{
+    
+}
+
+- (void)restClient:(DBRestClient*)client deletePathFailedWithError:(NSError*)error
+{
+    
+}
+
 
 
 #pragma mark - LiveOperationDelegate
@@ -289,7 +523,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (![activityIndicator isAnimating]) {
+    if (![activityIndicator isAnimating] && !tableView.editing) {
         switch ([[inputDictionary objectForKey:VIEW_TYPE_STRING] integerValue]) {
             case DROPBOX:
             {
@@ -367,6 +601,7 @@
 
 -(void) setInputDictionary:(NSDictionary *)aDictionary
 {
+    [self deSelectEditMode];
     inputDictionary = aDictionary;
     if ([inputDictionary count]) {
         browserTableView.tableHeaderView = nil;
@@ -385,8 +620,19 @@
                 }
                 NSDictionary *cachedDict = [CLCacheManager metaDataDictionaryForPath:path ForView:DROPBOX];
                 NSArray *contents = [cachedDict objectForKey:@"contents"];
+                __block NSMutableArray *computedTableData = [[NSMutableArray alloc] initWithArray:contents];
                 [tableData removeAllObjects];
-                [tableData addObjectsFromArray:contents];
+                BOOL hideFiles = [[inputDictionary objectForKey:@"HIDE_FILES"] boolValue];
+                if (hideFiles) {
+                    [contents enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                        NSDictionary *objDict = (NSDictionary *)obj;
+                        if (![[objDict objectForKey:@"isDirectory"] boolValue])
+                        {
+                            [computedTableData removeObject:objDict];
+                        }
+                    }];
+                }
+                [tableData addObjectsFromArray:computedTableData];
                 [browserTableView reloadData];
                 NSString *hash = [cachedDict objectForKey:@"hash"];
                 [metaDataRestClient loadMetadata:path withHash:hash];

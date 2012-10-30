@@ -65,6 +65,7 @@
     menuController.leftViewController = leftNavController;
     menuController.rootViewController = rootNavController;
     self.window.rootViewController = menuController;
+    [self initialSetup];
     
     return YES;
 }
@@ -145,7 +146,7 @@
              userState: (id) userState
 {
     NSLog(@"authCompleted");
-    [self initialSetup];
+//    [self initialSetup];
 }
 
 // This is invoked when the original method call fails.

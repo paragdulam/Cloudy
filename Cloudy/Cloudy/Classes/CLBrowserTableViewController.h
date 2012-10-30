@@ -10,14 +10,17 @@
 #import "AppDelegate.h"
 #import "CLWebViewController.h"
 #import "CLBrowserCell.h"
+#import "AGImagePickerController.h"
 
-@interface CLBrowserTableViewController : CLBaseViewController<DBRestClientDelegate,LiveOperationDelegate,UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,LiveDownloadOperationDelegate>
+@interface CLBrowserTableViewController : CLBaseViewController<DBRestClientDelegate,LiveOperationDelegate,UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,LiveDownloadOperationDelegate,AGImagePickerControllerDelegate>
 {
     NSDictionary *inputDictionary;
     DBRestClient *metaDataRestClient;
     UITableView *browserTableView;
     NSMutableArray *tableData;
     UIActivityIndicatorView *activityIndicator;
+    UIToolbar * fileOperationsToolBar;
+    UIButton *editButton;
 }
 
 @property(nonatomic,strong) NSDictionary *inputDictionary;

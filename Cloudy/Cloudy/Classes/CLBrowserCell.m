@@ -17,7 +17,8 @@
         // Initialization code
         backgroundImageView = [[UIImageView alloc] init];
         backgroundImageView.image = [UIImage imageNamed:@"cell_background.png"];
-        [self.contentView addSubview:backgroundImageView];
+        [self addSubview:backgroundImageView];
+        [self sendSubviewToBack:backgroundImageView];
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.textLabel.textColor = [UIColor whiteColor];
         self.textLabel.backgroundColor = [UIColor clearColor];
@@ -32,7 +33,7 @@
 -(void) layoutSubviews
 {
     [super layoutSubviews];
-    backgroundImageView.frame = self.contentView.bounds;
+    backgroundImageView.frame = self.bounds;
     self.imageView.bounds = CGRectMake(0, 0, 30.f, 30.f);
     self.imageView.center = CGPointMake(20.f, roundf(self.contentView.center.y));
     
