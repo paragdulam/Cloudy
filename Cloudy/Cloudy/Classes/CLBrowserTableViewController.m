@@ -33,6 +33,12 @@
     return self;
 }
 
+
+-(void) viewShownBySlidingAnimation
+{
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -40,17 +46,16 @@
     browserTableView = [[UITableView alloc] initWithFrame:self.view.bounds
                                                     style:UITableViewStylePlain];
     browserTableView.backgroundColor = [UIColor clearColor];
-    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cellSwiped:)];
-    swipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-    [browserTableView addGestureRecognizer:swipeGesture];
-    swipeGesture.delegate = self;
+//    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cellSwiped:)];
+//    swipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+//    [browserTableView addGestureRecognizer:swipeGesture];
+//    swipeGesture.delegate = self;
     
     browserTableView.dataSource = self;
     browserTableView.delegate = self;
     [self.view addSubview:browserTableView];
     
     tableData = [[NSMutableArray alloc] init];
-    restClients = [[NSMutableArray alloc] init];
     
     UIView *aView = [[UIView alloc] init];
     aView.backgroundColor = [UIColor clearColor];
@@ -61,6 +66,7 @@
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aView];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     browserTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self setInputDictionary:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -127,6 +133,13 @@
     NSDictionary *metadataDictionary = [CLDictionaryConvertor dictionaryFromMetadata:metadata];
     [CLCacheManager updateFolderStructure:metadataDictionary
                                   ForView:DROPBOX];
+    for (NSDictionary *mData in [metadataDictionary objectForKey:@"contents"]) {
+        if ([[mData objectForKey:@"thumbnailExists"] boolValue]) {
+            [metaDataRestClient loadThumbnail:[mData objectForKey:@"path"]
+                                       ofSize:@"small"
+                                     intoPath:[NSString stringWithFormat:@"%@/%@",[CLCacheManager getTemporaryDirectory],[mData objectForKey:@"filename"]]];
+        }
+    }
     [tableData removeAllObjects];
     [tableData addObjectsFromArray:[metadataDictionary objectForKey:@"contents"]];
     [browserTableView reloadData];
@@ -135,6 +148,13 @@
 
 - (void)restClient:(DBRestClient*)client metadataUnchangedAtPath:(NSString*)path
 {
+    for (NSDictionary *mData in tableData) {
+        if ([[mData objectForKey:@"thumbnailExists"] boolValue]) {
+            [metaDataRestClient loadThumbnail:[mData objectForKey:@"path"]
+                                       ofSize:@"small"
+                                     intoPath:[NSString stringWithFormat:@"%@/%@",[CLCacheManager getTemporaryDirectory],[mData objectForKey:@"filename"]]];
+        }
+    }
     [activityIndicator stopAnimating];
 }
 
@@ -146,6 +166,7 @@
 
 - (void)restClient:(DBRestClient*)client loadedThumbnail:(NSString*)destPath metadata:(DBMetadata*)metadata
 {
+    [browserTableView reloadData];
     [activityIndicator stopAnimating];
 }
 
@@ -158,16 +179,35 @@
 #pragma mark - LiveOperationDelegate
 
 
-- (void) liveOperationSucceeded:(LiveOperation *)operation
+- (void) liveOperationSucceeded:(LiveOperation *)operation 
 {
-    NSDictionary *result = operation.result;
-    
-    [CLCacheManager updateFolderStructure:result
-                                  ForView:SKYDRIVE];
-    [tableData removeAllObjects];
-    [tableData addObjectsFromArray:[result objectForKey:@"data"]];
-    [browserTableView reloadData];
-    [activityIndicator stopAnimating];
+    if (![operation userState]) {
+        
+//        NSDictionary *result = [parser objectWithString:operation.rawResult];
+        NSDictionary *result = operation.result;
+        [CLCacheManager updateFolderStructure:result
+                                      ForView:SKYDRIVE];
+        
+        [tableData removeAllObjects];
+        NSArray *dataArray = [result objectForKey:@"data"];
+        [tableData addObjectsFromArray:dataArray];
+        
+        for (NSDictionary *data in dataArray) {
+            NSArray *images = [data objectForKey:@"images"];
+            if ([images count]) {
+                NSDictionary *image = [images objectAtIndex:2];
+                [self.appDelegate.liveConnectClient downloadFromPath:[image objectForKey:@"source"] delegate:self userState:[data objectForKey:@"name"]];
+            }
+        }
+        
+        [browserTableView reloadData];
+        [activityIndicator stopAnimating];
+    } else if ([operation isKindOfClass:[LiveDownloadOperation class]]) {
+        LiveDownloadOperation *downloadOperation = (LiveDownloadOperation *)operation;
+        [downloadOperation.data writeToFile:[NSString stringWithFormat:@"%@/%@",[CLCacheManager getTemporaryDirectory],[downloadOperation userState]]
+                                 atomically:YES];
+        [browserTableView reloadData];
+    }
 }
 
 - (void) liveOperationFailed:(NSError *)error
@@ -175,6 +215,14 @@
 {
     [activityIndicator stopAnimating];
 }
+
+- (void) liveDownloadOperationProgressed:(LiveOperationProgress *)progress
+                                    data:(NSData *)receivedData
+                               operation:(LiveDownloadOperation *)operation
+{
+    
+}
+
 
 #pragma mark - UITableViewDataSource
 
@@ -204,12 +252,16 @@
         detailText = [data objectForKey:@"updated_time"];
         if ([[data objectForKey:@"type"] isEqualToString:@"folder"] || [[data objectForKey:@"type"] isEqualToString:@"album"]) {
             cellImage = [UIImage imageNamed:@"folder.png"];
+        } else if ([[data objectForKey:@"type"] isEqualToString:@"photo"]) {
+            cellImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[CLCacheManager getTemporaryDirectory],titleText]];
         }
         if (!titleText) {
             titleText = [data objectForKey:@"filename"];
             detailText = [[data objectForKey:@"lastModifiedDate"] description];
             if ([[data objectForKey:@"isDirectory"] boolValue]) {
                 cellImage = [UIImage imageNamed:@"folder.png"];
+            } else if ([[data objectForKey:@"thumbnailExists"] boolValue]) {
+                cellImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[CLCacheManager getTemporaryDirectory],titleText]];
             }
         }
     } else if ([object isKindOfClass:[DBMetadata class]]) {
@@ -229,19 +281,27 @@
 
 #pragma mark - UITableViewDelegate
 
+
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 48.f;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (![activityIndicator isAnimating]) {
         switch ([[inputDictionary objectForKey:VIEW_TYPE_STRING] integerValue]) {
             case DROPBOX:
             {
-//                DBMetadata *metaData = [tableData objectAtIndex:indexPath.row];
                 NSDictionary *metaData = [tableData objectAtIndex:indexPath.row];
                 if ([[metaData objectForKey:@"isDirectory"] boolValue]) {
                     NSMutableDictionary *inputDict = [[NSMutableDictionary alloc] init];
                     [inputDict setObject:[metaData objectForKey:@"path"] forKey:PATH];
                     [inputDict setObject:[NSNumber numberWithInteger:DROPBOX]
                                   forKey:VIEW_TYPE_STRING];
+                    [inputDict setObject:[metaData  objectForKey:@"filename"]
+                                  forKey:@"TITLE"];
+
 
                     CLBrowserTableViewController *browserViewController = [[CLBrowserTableViewController alloc] init];
                     [self.navigationController pushViewController:browserViewController animated:YES];
@@ -251,6 +311,8 @@
                     [inputDict setObject:[metaData objectForKey:@"path"] forKey:FILE_INFO];
                     [inputDict setObject:[NSNumber numberWithInteger:DROPBOX]
                                   forKey:VIEW_TYPE_STRING];
+                    [inputDict setObject:[metaData  objectForKey:@"filename"]
+                                  forKey:@"TITLE"];
 
                     CLWebViewController *webViewController = [[CLWebViewController alloc] init];
                     [self.navigationController pushViewController:webViewController animated:YES];
@@ -269,6 +331,8 @@
                     [inputDict setObject:path forKey:PATH];
                     [inputDict setObject:[NSNumber numberWithInteger:SKYDRIVE]
                                   forKey:VIEW_TYPE_STRING];
+                    [inputDict setObject:[selectedDirectory  objectForKey:@"name"]
+                                  forKey:@"TITLE"];
                     CLBrowserTableViewController *browserViewController = [[CLBrowserTableViewController alloc] init];
                     [self.navigationController pushViewController:browserViewController animated:YES];
                     [browserViewController setInputDictionary:inputDict];
@@ -278,6 +342,9 @@
                     [inputDict setObject:[selectedDirectory objectForKey:@"source"] forKey:FILE_INFO];
                     [inputDict setObject:[NSNumber numberWithInteger:SKYDRIVE]
                                   forKey:VIEW_TYPE_STRING];
+                    [inputDict setObject:[selectedDirectory  objectForKey:@"name"]
+                                  forKey:@"TITLE"];
+
                     
                     CLWebViewController *webViewController = [[CLWebViewController alloc] init];
                     [self.navigationController pushViewController:webViewController animated:YES];
@@ -301,41 +368,67 @@
 -(void) setInputDictionary:(NSDictionary *)aDictionary
 {
     inputDictionary = aDictionary;
-    NSString *path = [inputDictionary objectForKey:PATH];
-    VIEW_TYPE viewType = [[inputDictionary objectForKey:VIEW_TYPE_STRING] integerValue];
-    
-    switch (viewType) {
-        case DROPBOX:
-        {
-            NSString *userId = [[[DBSession sharedSession] userIds] objectAtIndex:0];
-            metaDataRestClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]
-                                                        userId:userId];
-            metaDataRestClient.delegate = self;
-            if (!path) {
-                path = @"/";
+    if ([inputDictionary count]) {
+        browserTableView.tableHeaderView = nil;
+        NSString *path = [inputDictionary objectForKey:PATH];
+        VIEW_TYPE viewType = [[inputDictionary objectForKey:VIEW_TYPE_STRING] integerValue];
+        [self.navigationItem setTitle:[inputDictionary objectForKey:@"TITLE"]];
+        switch (viewType) {
+            case DROPBOX:
+            {
+                NSString *userId = [[[DBSession sharedSession] userIds] objectAtIndex:0];
+                metaDataRestClient = [[DBRestClient alloc] initWithSession:self.appDelegate.dropboxSession
+                                                                    userId:userId];
+                metaDataRestClient.delegate = self;
+                if (!path) {
+                    path = @"/";
+                }
+                NSDictionary *cachedDict = [CLCacheManager metaDataDictionaryForPath:path ForView:DROPBOX];
+                NSArray *contents = [cachedDict objectForKey:@"contents"];
+                [tableData removeAllObjects];
+                [tableData addObjectsFromArray:contents];
+                [browserTableView reloadData];
+                NSString *hash = [cachedDict objectForKey:@"hash"];
+                [metaDataRestClient loadMetadata:path withHash:hash];
+                [activityIndicator startAnimating];
             }
-            NSDictionary *cachedDict = [CLCacheManager metaDataDictionaryForPath:path ForView:DROPBOX];
-            NSArray *contents = [cachedDict objectForKey:@"contents"];
-            [tableData removeAllObjects];
-            [tableData addObjectsFromArray:contents];
-            [browserTableView reloadData];
-            NSString *hash = [cachedDict objectForKey:@"hash"];
-            [metaDataRestClient loadMetadata:path withHash:hash];
-            [activityIndicator startAnimating];
-        }
-            break;
-        case SKYDRIVE:
-        {
-            if (!path) {
-                path = @"me/skydrive/files";
+                break;
+            case SKYDRIVE:
+            {
+                if (!path) {
+                    path = @"me/skydrive/files";
+                }
+                [self.appDelegate.liveConnectClient getWithPath:path
+                                                       delegate:self];
+                [tableData removeAllObjects];
+                NSDictionary *cachedData = [CLCacheManager metaDataDictionaryForPath:path
+                                                                             ForView:SKYDRIVE];
+                [tableData addObjectsFromArray:[cachedData objectForKey:@"data"]];
+                [browserTableView reloadData];
+                [activityIndicator startAnimating];
             }
-            [self.appDelegate.liveConnectClient getWithPath:path
-                                                   delegate:self];
-            [activityIndicator startAnimating];
+                break;
+            default:
+                break;
         }
-            break;
-        default:
-            break;
+    } else {
+        if (![[CLCacheManager accounts] count]) {
+            UILabel *addAccountLabel = [[UILabel alloc] init];
+            addAccountLabel.text = @"Tap here to add an account";
+            [addAccountLabel setFont:[UIFont boldSystemFontOfSize:16.f]];
+            addAccountLabel.backgroundColor = [UIColor clearColor];
+            addAccountLabel.textColor = [UIColor whiteColor];
+            [addAccountLabel sizeToFit];
+            
+            UIImageView *headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"1351499593_arrow_up.png"]];
+            [headerView addSubview:addAccountLabel];
+            addAccountLabel.center = CGPointMake(roundf(headerView.center.x + 150.f), roundf(headerView.center.y));
+            headerView.frame = CGRectMake(0, 0, 320.f, 64.f);
+            headerView.contentMode = UIViewContentModeLeft;
+            browserTableView.tableHeaderView = headerView;
+        }
+        [tableData removeAllObjects];
+        [browserTableView reloadData];
     }
 }
 

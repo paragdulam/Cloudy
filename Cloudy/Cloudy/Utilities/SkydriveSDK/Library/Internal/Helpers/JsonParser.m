@@ -341,7 +341,8 @@ static NSCharacterSet *s_CharacterSetBackslashAndQuote = nil;
 		{
 			// Null value found
 			if ([_scanner scanString:@"null" intoString:NULL])
-				value = [NSNull null];
+//				value = [NSNull null];
+                value = @"null"; //changed By Parag
 			break;
 		}
 

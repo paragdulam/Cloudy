@@ -734,6 +734,11 @@
 
 #pragma mark - Actions 
 
+-(UIBarButtonItem *) leftBarButtonItem
+{
+    return self.navigationItem.leftBarButtonItem;
+}
+
 - (void)showLeft:(id)sender {
     
     [self showLeftController:YES];

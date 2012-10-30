@@ -21,6 +21,9 @@
 +(NSString *) getFileStructurePath:(VIEW_TYPE) type;
 +(NSDictionary *) metaDataDictionaryForPath:(NSString *) path ForView:(VIEW_TYPE) type;
 +(BOOL) updateFolderStructure:(NSDictionary *) metaDataDict ForView:(VIEW_TYPE) type;
++(BOOL) deleteFileStructureForView:(VIEW_TYPE) type;
++(NSString *) getTemporaryDirectory;
++(NSDictionary *) getAccountForType:(VIEW_TYPE) type;
 
 
 @end

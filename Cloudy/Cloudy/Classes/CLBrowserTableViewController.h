@@ -11,18 +11,18 @@
 #import "CLWebViewController.h"
 #import "CLBrowserCell.h"
 
-@interface CLBrowserTableViewController : CLBaseViewController<DBRestClientDelegate,LiveOperationDelegate,UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
+@interface CLBrowserTableViewController : CLBaseViewController<DBRestClientDelegate,LiveOperationDelegate,UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,LiveDownloadOperationDelegate>
 {
     NSDictionary *inputDictionary;
     DBRestClient *metaDataRestClient;
     UITableView *browserTableView;
     NSMutableArray *tableData;
     UIActivityIndicatorView *activityIndicator;
-    NSMutableArray *restClients;
 }
 
 @property(nonatomic,strong) NSDictionary *inputDictionary;
 
 -(id) initWithInputDictionary:(NSDictionary *) configDictionary;
+-(void) viewShownBySlidingAnimation;
 
 @end

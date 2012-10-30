@@ -41,18 +41,6 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    DDMenuController *menuController = [[DDMenuController alloc] init];
-    CLAccountsTableViewController *leftbaseViewController = [[CLAccountsTableViewController alloc] init];
-    UINavigationController *leftNavController = [[UINavigationController alloc] initWithRootViewController:leftbaseViewController];
-    
-    CLBrowserTableViewController *rootbaseViewController = [[CLBrowserTableViewController alloc] init];
-    UINavigationController *rootNavController = [[UINavigationController alloc] initWithRootViewController:rootbaseViewController];
-
-    menuController.leftViewController = leftNavController;
-    menuController.rootViewController = rootNavController;
-    self.window.rootViewController = menuController;
-    
-    
     DBSession *session = [[DBSession alloc] initWithAppKey:DROPBOX_APP_KEY
                                                  appSecret:DROPBOX_APP_SECRET_KEY
                                                       root:kDBRootDropbox];
@@ -65,6 +53,19 @@
     
     [CLCacheManager initialSetup];
 
+    
+    DDMenuController *menuController = [[DDMenuController alloc] init];
+    menuController.delegate = self;
+    CLAccountsTableViewController *leftbaseViewController = [[CLAccountsTableViewController alloc] init];
+    UINavigationController *leftNavController = [[UINavigationController alloc] initWithRootViewController:leftbaseViewController];
+    
+    CLBrowserTableViewController *rootbaseViewController = [[CLBrowserTableViewController alloc] init];
+    UINavigationController *rootNavController = [[UINavigationController alloc] initWithRootViewController:rootbaseViewController];
+
+    menuController.leftViewController = leftNavController;
+    menuController.rootViewController = rootNavController;
+    self.window.rootViewController = menuController;
+    
     return YES;
 }
 
@@ -106,11 +107,45 @@
 #pragma mark - LiveAuthDelegate
 
 
+-(void) initialSetup
+{
+    NSMutableDictionary *inpDict = nil;
+    if ([[CLCacheManager accounts] count]) {
+        NSDictionary *accountData = [[CLCacheManager accounts] objectAtIndex:0];
+        int type = [[accountData objectForKey:ACCOUNT_TYPE] integerValue];
+        inpDict = [[NSMutableDictionary alloc] init];
+        [inpDict setObject:[NSNumber numberWithInteger:type] forKey:VIEW_TYPE_STRING];
+        switch (type) {
+            case DROPBOX:
+            {
+                [inpDict setObject:@"/" forKey:PATH];
+                [inpDict setObject:DROPBOX_STRING forKey:@"TITLE"];
+            }
+                break;
+            case SKYDRIVE:
+            {
+                [inpDict setObject:@"me/skydrive/files" forKey:PATH];
+                [inpDict setObject:SKYDRIVE_STRING forKey:@"TITLE"];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }
+    DDMenuController *menuController = (DDMenuController *)self.window.rootViewController;
+    UINavigationController *nController = (UINavigationController *)menuController.rootViewController;
+    CLBrowserTableViewController *browserViewController = (CLBrowserTableViewController *)[nController.viewControllers objectAtIndex:0];
+    [browserViewController setInputDictionary:inpDict];
+
+}
+
 - (void) authCompleted: (LiveConnectSessionStatus) status
                session: (LiveConnectSession *) session
              userState: (id) userState
 {
     NSLog(@"authCompleted");
+    [self initialSetup];
 }
 
 // This is invoked when the original method call fails.
@@ -119,6 +154,20 @@
 {
     NSLog(@"authFailed");
 }
+
+
+#pragma mark - DDMenuControllerDelegate
+
+- (void)menuController:(DDMenuController*)menuController
+willShowViewController:(UIViewController*)controller
+{
+    UINavigationController *nController = (UINavigationController *)controller;
+    CLBrowserTableViewController *browserViewController = (CLBrowserTableViewController *)[nController.viewControllers objectAtIndex:0];
+    if ([browserViewController isKindOfClass:[CLBrowserTableViewController class]]) {
+        [browserViewController viewShownBySlidingAnimation];
+    }
+}
+
 
 
 @end

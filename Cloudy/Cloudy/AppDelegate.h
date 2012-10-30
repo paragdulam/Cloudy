@@ -16,7 +16,7 @@
 
 @class CLAccountsTableViewController;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,DBSessionDelegate,LiveAuthDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,DBSessionDelegate,LiveAuthDelegate,DDMenuControllerDelegate>
 {
     DBSession *dropboxSession;
     LiveConnectClient *liveConnectClient;
@@ -26,6 +26,9 @@
 @property (strong, nonatomic) DBSession *dropboxSession;
 @property (strong, nonatomic) LiveConnectClient *liveConnectClient;
 @property (weak,nonatomic) CLAccountsTableViewController *callBackViewController;
+
+-(void) initialSetup;
+
 
 
 @end

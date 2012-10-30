@@ -44,7 +44,7 @@
 }
 
 - (void)dealloc
-{ 
+{
     [_clientId release];
     [_scopes release];
     [_session release];

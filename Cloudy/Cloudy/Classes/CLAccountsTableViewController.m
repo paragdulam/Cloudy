@@ -28,22 +28,23 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    CGRect rect = self.navigationController.view.frame;
+    CGRect rect = self.navigationController.view.bounds;
     rect.size.width -= 40.f;
     self.navigationController.view.frame = rect;
     
-    rect = self.view.frame;
+    rect = self.view.bounds;
     rect.size.width -= 40.f;
     self.view.frame = rect;
 
     editButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [editButton setTitle:@"Edit" forState:UIControlStateNormal];
     [editButton setTitle:@"Done" forState:UIControlStateSelected];
+    [editButton setBackgroundImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
     [editButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [editButton addTarget:self
                    action:@selector(editButtonClicked:)
          forControlEvents:UIControlEventTouchUpInside];
-    [editButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.f]];
+    [editButton.titleLabel setFont:[UIFont boldSystemFontOfSize:12.f]];
     [editButton setFrame:CGRectMake(0, 0, 50, 30)];
     UIBarButtonItem *editBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:editButton];
     [self.navigationItem setLeftBarButtonItem:editBarButtonItem];
@@ -58,17 +59,19 @@
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     
     
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20.f];
-    titleLabel.text = @"Accounts";
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.textColor = [UIColor whiteColor];
-    [titleLabel sizeToFit];
-    [self.navigationItem setTitleView:titleLabel];
+//    UILabel *titleLabel = [[UILabel alloc] init];
+//    titleLabel.font = [UIFont boldSystemFontOfSize:20.f];
+//    titleLabel.text = @"Accounts";
+//    titleLabel.backgroundColor = [UIColor clearColor];
+//    titleLabel.textColor = [UIColor whiteColor];
+//    [titleLabel sizeToFit];
+//    [self.navigationItem setTitleView:titleLabel];
+    self.title = @"Accounts";
     
     accountsTableView = [[UITableView alloc] initWithFrame:self.view.bounds
                                                      style:UITableViewStyleGrouped];
     accountsTableView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    accountsTableView.backgroundView = nil;
     
     
     accountsTableView.dataSource = self;
@@ -76,8 +79,10 @@
     [self.view addSubview:accountsTableView];
     NSArray *storedAccounts = [CLCacheManager accounts];
     if (![storedAccounts count]) {
+        editButton.hidden = YES;
         accounts = [[NSMutableArray alloc] initWithObjects:@"Dropbox",@"SkyDrive", nil];
     } else {
+        editButton.hidden = NO;
         accounts = [[NSMutableArray alloc] initWithArray:storedAccounts];
         switch ([storedAccounts count]) {
             case 1:
@@ -154,6 +159,20 @@
     CLBrowserTableViewController *browserViewController = (CLBrowserTableViewController *)[navController.viewControllers objectAtIndex:0];
     [menuController setRootController:navController
                              animated:YES];
+    switch (type) {
+        case DROPBOX:
+            [configDictionary setObject:DROPBOX_STRING
+                                 forKey:@"TITLE"];
+            [configDictionary setObject:@"dropbox_cell_Image.png" forKey:@"IMAGE_NAME"];
+            break;
+        case SKYDRIVE:
+            [configDictionary setObject:SKYDRIVE_STRING
+                                 forKey:@"TITLE"];
+            [configDictionary setObject:@"SkyDriveIconWhite_32x32.png" forKey:@"IMAGE_NAME"];
+            break;
+        default:
+            break;
+    }
     [browserViewController setInputDictionary:configDictionary];
 }
 
@@ -171,9 +190,11 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:@"CELL"];
+        cell.textLabel.textColor = [UIColor whiteColor];
     }
     id object = [accounts objectAtIndex:indexPath.section];
     NSString *titleText = nil;
+    UIImage *cellImage = nil;
     if ([object isKindOfClass:[NSString class]]) {
         titleText = (NSString *)object;
     } else if ([object isKindOfClass:[NSDictionary class]]) {
@@ -181,8 +202,30 @@
         titleText = [data objectForKey:@"displayName"];
     }
     
+    switch (indexPath.section) {
+        case DROPBOX:
+            cellImage = [UIImage imageNamed:@"dropbox_cell_Image.png"];
+            break;
+        case SKYDRIVE:
+            cellImage = [UIImage imageNamed:@"SkyDriveIconWhite_32x32.png"];
+            break;
+        default:
+            break;
+    }
+
+    
     [cell.textLabel setText:titleText];
+    [cell.imageView setImage:cellImage];
     return cell;
+}
+
+
+-(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor colorWithRed:55.f/255.f
+                                           green:55.f/255.f
+                                            blue:55.f/255.f
+                                           alpha:1.f];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -261,7 +304,9 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [CLCacheManager deleteAccount:[accounts objectAtIndex:indexPath.section]];
+    [CLCacheManager deleteAccount:[CLCacheManager getAccountForType:indexPath.section]];
+    [CLCacheManager deleteFileStructureForView:indexPath.section];
+    
     switch (indexPath.section) {
         case 0:
         {
@@ -282,7 +327,12 @@
     }
     NSArray *sequenceArray = [NSArray arrayWithObjects:[NSNumber numberWithInteger:UITableViewRowAnimationRight],[NSNumber numberWithInteger:UITableViewRowAnimationLeft], nil];
     [self performTableViewAnimationForIndexPath:indexPath withAnimationSequence:sequenceArray];
-//    [self editButtonClicked:editButton];
+    [self editButtonClicked:editButton];
+    
+    [self.appDelegate initialSetup];
+    if (![[CLCacheManager accounts] count]) {
+        editButton.hidden = YES;
+    }
 }
 
 
@@ -346,6 +396,8 @@
     [accounts replaceObjectAtIndex:1 withObject:result];
     NSArray *sequenceArray = [NSArray arrayWithObjects:[NSNumber numberWithInteger:UITableViewRowAnimationLeft],[NSNumber numberWithInteger:UITableViewRowAnimationRight], nil];
     [self performTableViewAnimationForIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] withAnimationSequence:sequenceArray];
+    editButton.hidden = NO;
+    [self tableView:accountsTableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
 }
 
 - (void) liveOperationFailed:(NSError *)error
@@ -364,6 +416,9 @@
     [accounts replaceObjectAtIndex:0 withObject:accountInfo];
     NSArray *sequenceArray = [NSArray arrayWithObjects:[NSNumber numberWithInteger:UITableViewRowAnimationLeft],[NSNumber numberWithInteger:UITableViewRowAnimationRight], nil];
     [self performTableViewAnimationForIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] withAnimationSequence:sequenceArray];
+    editButton.hidden = NO;
+    [self tableView:accountsTableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+
 }
 
 - (void)restClient:(DBRestClient*)client loadAccountInfoFailedWithError:(NSError*)error

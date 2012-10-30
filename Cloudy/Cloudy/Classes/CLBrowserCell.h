@@ -12,5 +12,6 @@
 @interface CLBrowserCell : UITableViewCell
 {
     UIImageView *backgroundImageView;
+    
 }
 @end

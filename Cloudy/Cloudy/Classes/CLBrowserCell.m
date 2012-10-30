@@ -18,12 +18,13 @@
         backgroundImageView = [[UIImageView alloc] init];
         backgroundImageView.image = [UIImage imageNamed:@"cell_background.png"];
         [self.contentView addSubview:backgroundImageView];
-        
+        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.textLabel.textColor = [UIColor whiteColor];
         self.textLabel.backgroundColor = [UIColor clearColor];
         
         self.detailTextLabel.textColor = [UIColor lightGrayColor];
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
+        self.detailTextLabel.font = [UIFont systemFontOfSize:12.f];
     }
     return self;
 }
@@ -32,7 +33,7 @@
 {
     [super layoutSubviews];
     backgroundImageView.frame = self.contentView.bounds;
-    self.imageView.frame = CGRectMake(0, 0, 30.f, 30.f);
+    self.imageView.bounds = CGRectMake(0, 0, 30.f, 30.f);
     self.imageView.center = CGPointMake(20.f, roundf(self.contentView.center.y));
     
     CGRect rect = self.textLabel.frame;

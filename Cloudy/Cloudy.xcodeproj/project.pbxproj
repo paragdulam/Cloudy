@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F14EAAF3163E771300EA395B /* 1351499593_arrow_up.png in Resources */ = {isa = PBXBuildFile; fileRef = F14EAAF2163E771300EA395B /* 1351499593_arrow_up.png */; };
 		F1684846163D2AA300D2A34D /* CLFIleDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F1684845163D2AA200D2A34D /* CLFIleDetailsView.m */; };
 		F1684848163D313600D2A34D /* cell_background.png in Resources */ = {isa = PBXBuildFile; fileRef = F1684847163D313600D2A34D /* cell_background.png */; };
 		F168484A163D34AB00D2A34D /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = F1684849163D34AB00D2A34D /* folder.png */; };
+		F168484C163D386000D2A34D /* dropbox_cell_Image.png in Resources */ = {isa = PBXBuildFile; fileRef = F168484B163D386000D2A34D /* dropbox_cell_Image.png */; };
+		F168484E163D38C900D2A34D /* SkyDriveIconBlue_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F168484D163D38C900D2A34D /* SkyDriveIconBlue_32x32.png */; };
+		F1684850163D394A00D2A34D /* SkyDriveIconWhite_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F168484F163D394900D2A34D /* SkyDriveIconWhite_32x32.png */; };
 		F18F10B716385BBE008AD713 /* CLCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F18F10B616385BBE008AD713 /* CLCacheManager.m */; };
 		F1B4FDFC1639BF6D009CCD35 /* CLWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1B4FDFB1639BF6D009CCD35 /* CLWebViewController.m */; };
 		F1BD892A1636A3E400DD93B3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BD89291636A3E400DD93B3 /* UIKit.framework */; };
@@ -55,6 +59,7 @@
 		F1BD8A0A1636C7EA00DD93B3 /* LiveOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BD89EC1636C7EA00DD93B3 /* LiveOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F1BD8A0B1636C7EA00DD93B3 /* LiveOperationProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BD89EF1636C7EA00DD93B3 /* LiveOperationProgress.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F1BD8A0C1636C7EA00DD93B3 /* backArrow_black.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BD89F31636C7EA00DD93B3 /* backArrow_black.png */; };
+		F1C06C0C163D671A000E5DDE /* editButton.png in Resources */ = {isa = PBXBuildFile; fileRef = F1C06C0B163D671A000E5DDE /* editButton.png */; };
 		F1CAC29B163BE291006976CB /* CLBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F1CAC29A163BE291006976CB /* CLBrowserCell.m */; };
 /* End PBXBuildFile section */
 
@@ -83,10 +88,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F14EAAF2163E771300EA395B /* 1351499593_arrow_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1351499593_arrow_up.png; sourceTree = "<group>"; };
 		F1684844163D2AA200D2A34D /* CLFIleDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLFIleDetailsView.h; sourceTree = "<group>"; };
 		F1684845163D2AA200D2A34D /* CLFIleDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLFIleDetailsView.m; sourceTree = "<group>"; };
 		F1684847163D313600D2A34D /* cell_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cell_background.png; sourceTree = "<group>"; };
 		F1684849163D34AB00D2A34D /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
+		F168484B163D386000D2A34D /* dropbox_cell_Image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dropbox_cell_Image.png; sourceTree = "<group>"; };
+		F168484D163D38C900D2A34D /* SkyDriveIconBlue_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SkyDriveIconBlue_32x32.png; sourceTree = "<group>"; };
+		F168484F163D394900D2A34D /* SkyDriveIconWhite_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SkyDriveIconWhite_32x32.png; sourceTree = "<group>"; };
 		F18F10B516385BBE008AD713 /* CLCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLCacheManager.h; sourceTree = "<group>"; };
 		F18F10B616385BBE008AD713 /* CLCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLCacheManager.m; sourceTree = "<group>"; };
 		F1B4FDFA1639BF6D009CCD35 /* CLWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLWebViewController.h; sourceTree = "<group>"; };
@@ -176,6 +185,7 @@
 		F1BD89F11636C7EA00DD93B3 /* LiveUploadOverwriteOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveUploadOverwriteOption.h; sourceTree = "<group>"; };
 		F1BD89F31636C7EA00DD93B3 /* backArrow_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backArrow_black.png; sourceTree = "<group>"; };
 		F1BD8A361636D52400DD93B3 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		F1C06C0B163D671A000E5DDE /* editButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editButton.png; sourceTree = "<group>"; };
 		F1CAC299163BE291006976CB /* CLBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLBrowserCell.h; sourceTree = "<group>"; };
 		F1CAC29A163BE291006976CB /* CLBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLBrowserCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -299,6 +309,11 @@
 		F1BD89511636A5DF00DD93B3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F14EAAF2163E771300EA395B /* 1351499593_arrow_up.png */,
+				F1C06C0B163D671A000E5DDE /* editButton.png */,
+				F168484F163D394900D2A34D /* SkyDriveIconWhite_32x32.png */,
+				F168484D163D38C900D2A34D /* SkyDriveIconBlue_32x32.png */,
+				F168484B163D386000D2A34D /* dropbox_cell_Image.png */,
 				F1684849163D34AB00D2A34D /* folder.png */,
 				F1684847163D313600D2A34D /* cell_background.png */,
 				F1BD89521636A5F200DD93B3 /* nav_menu_icon@2x.png */,
@@ -520,6 +535,11 @@
 				F1BD8A0C1636C7EA00DD93B3 /* backArrow_black.png in Resources */,
 				F1684848163D313600D2A34D /* cell_background.png in Resources */,
 				F168484A163D34AB00D2A34D /* folder.png in Resources */,
+				F168484C163D386000D2A34D /* dropbox_cell_Image.png in Resources */,
+				F168484E163D38C900D2A34D /* SkyDriveIconBlue_32x32.png in Resources */,
+				F1684850163D394A00D2A34D /* SkyDriveIconWhite_32x32.png in Resources */,
+				F1C06C0C163D671A000E5DDE /* editButton.png in Resources */,
+				F14EAAF3163E771300EA395B /* 1351499593_arrow_up.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
