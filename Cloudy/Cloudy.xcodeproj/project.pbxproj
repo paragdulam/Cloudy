@@ -752,6 +752,7 @@
 				GCC_PREFIX_HEADER = "Cloudy/Cloudy-Prefix.pch";
 				HEADER_SEARCH_PATHS = "/Users/paragdulam/Projects/CloudSync/Cloudy/Cloudy/Utilities/DropboxSDK/Classes/**";
 				INFOPLIST_FILE = "Cloudy/Cloudy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -772,6 +773,7 @@
 				GCC_PREFIX_HEADER = "Cloudy/Cloudy-Prefix.pch";
 				HEADER_SEARCH_PATHS = "/Users/paragdulam/Projects/CloudSync/Cloudy/Cloudy/Utilities/DropboxSDK/Classes/**";
 				INFOPLIST_FILE = "Cloudy/Cloudy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
