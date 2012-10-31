@@ -158,26 +158,10 @@
 
 -(void) moveButtonClicked:(UIButton *) sender
 {
-    NSMutableDictionary *inpDictionary = [NSMutableDictionary dictionaryWithDictionary:inputDictionary];
-    [inpDictionary setObject:[NSNumber numberWithBool:YES]
-                      forKey:@"HIDE_FILES"];
-
-    CLBrowserTableViewController *browserViewController = [[CLBrowserTableViewController alloc] initWithInputDictionary:inpDictionary];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:browserViewController];
-    [self presentViewController:navController
-                       animated:YES
-                     completion:^{
-                         
-                     }];
 }
 
 -(void) deleteButtonClicked:(UIButton *) sender
 {
-    NSArray *selectedRows = [browserTableView indexPathsForSelectedRows];
-    for (NSIndexPath *indexPath in selectedRows) {
-        NSDictionary *data = [tableData objectAtIndex:indexPath.row];
-        [metaDataRestClient deletePath:[data objectForKey:@"path"]];
-    }
 }
 
 -(void) editButtonClicked:(UIButton *) sender
