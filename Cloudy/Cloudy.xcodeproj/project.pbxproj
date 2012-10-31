@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		F14EAAF3163E771300EA395B /* 1351499593_arrow_up.png in Resources */ = {isa = PBXBuildFile; fileRef = F14EAAF2163E771300EA395B /* 1351499593_arrow_up.png */; };
-		F1684846163D2AA300D2A34D /* CLFIleDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F1684845163D2AA200D2A34D /* CLFIleDetailsView.m */; };
 		F1684848163D313600D2A34D /* cell_background.png in Resources */ = {isa = PBXBuildFile; fileRef = F1684847163D313600D2A34D /* cell_background.png */; };
 		F168484A163D34AB00D2A34D /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = F1684849163D34AB00D2A34D /* folder.png */; };
 		F168484C163D386000D2A34D /* dropbox_cell_Image.png in Resources */ = {isa = PBXBuildFile; fileRef = F168484B163D386000D2A34D /* dropbox_cell_Image.png */; };
@@ -106,8 +105,6 @@
 
 /* Begin PBXFileReference section */
 		F14EAAF2163E771300EA395B /* 1351499593_arrow_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1351499593_arrow_up.png; sourceTree = "<group>"; };
-		F1684844163D2AA200D2A34D /* CLFIleDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLFIleDetailsView.h; sourceTree = "<group>"; };
-		F1684845163D2AA200D2A34D /* CLFIleDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLFIleDetailsView.m; sourceTree = "<group>"; };
 		F1684847163D313600D2A34D /* cell_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cell_background.png; sourceTree = "<group>"; };
 		F1684849163D34AB00D2A34D /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		F168484B163D386000D2A34D /* dropbox_cell_Image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dropbox_cell_Image.png; sourceTree = "<group>"; };
@@ -325,8 +322,6 @@
 				F1B4FDFB1639BF6D009CCD35 /* CLWebViewController.m */,
 				F1CAC299163BE291006976CB /* CLBrowserCell.h */,
 				F1CAC29A163BE291006976CB /* CLBrowserCell.m */,
-				F1684844163D2AA200D2A34D /* CLFIleDetailsView.h */,
-				F1684845163D2AA200D2A34D /* CLFIleDetailsView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -665,7 +660,6 @@
 				F18F10B716385BBE008AD713 /* CLCacheManager.m in Sources */,
 				F1B4FDFC1639BF6D009CCD35 /* CLWebViewController.m in Sources */,
 				F1CAC29B163BE291006976CB /* CLBrowserCell.m in Sources */,
-				F1684846163D2AA300D2A34D /* CLFIleDetailsView.m in Sources */,
 				F1FE01DD163FD1640060BDB3 /* AGImagePickerController+Constants.m in Sources */,
 				F1FE01DE163FD1640060BDB3 /* AGImagePickerController.m in Sources */,
 				F1FE01E2163FD1640060BDB3 /* AGIPCAlbumsController.m in Sources */,
