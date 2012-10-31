@@ -8,9 +8,9 @@
 
 #import "CLBaseViewController.h"
 #import "AppDelegate.h"
-#import "CLWebViewController.h"
 #import "CLBrowserCell.h"
 #import "AGImagePickerController.h"
+#import "CLFileReaderViewController.h"
 
 @interface CLBrowserTableViewController : CLBaseViewController<DBRestClientDelegate,LiveOperationDelegate,UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,LiveDownloadOperationDelegate,AGImagePickerControllerDelegate>
 {
@@ -21,6 +21,7 @@
     UIActivityIndicatorView *activityIndicator;
     UIToolbar * fileOperationsToolBar;
     UIButton *editButton;
+    
 }
 
 @property(nonatomic,strong) NSDictionary *inputDictionary;

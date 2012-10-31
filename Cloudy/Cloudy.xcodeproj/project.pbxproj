@@ -14,7 +14,6 @@
 		F168484E163D38C900D2A34D /* SkyDriveIconBlue_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F168484D163D38C900D2A34D /* SkyDriveIconBlue_32x32.png */; };
 		F1684850163D394A00D2A34D /* SkyDriveIconWhite_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F168484F163D394900D2A34D /* SkyDriveIconWhite_32x32.png */; };
 		F18F10B716385BBE008AD713 /* CLCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F18F10B616385BBE008AD713 /* CLCacheManager.m */; };
-		F1B4FDFC1639BF6D009CCD35 /* CLWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1B4FDFB1639BF6D009CCD35 /* CLWebViewController.m */; };
 		F1BD892A1636A3E400DD93B3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BD89291636A3E400DD93B3 /* UIKit.framework */; };
 		F1BD892C1636A3E400DD93B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BD892B1636A3E400DD93B3 /* Foundation.framework */; };
 		F1BD892E1636A3E400DD93B3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1BD892D1636A3E400DD93B3 /* CoreGraphics.framework */; };
@@ -60,6 +59,9 @@
 		F1BD8A0C1636C7EA00DD93B3 /* backArrow_black.png in Resources */ = {isa = PBXBuildFile; fileRef = F1BD89F31636C7EA00DD93B3 /* backArrow_black.png */; };
 		F1C06C0C163D671A000E5DDE /* editButton.png in Resources */ = {isa = PBXBuildFile; fileRef = F1C06C0B163D671A000E5DDE /* editButton.png */; };
 		F1CAC29B163BE291006976CB /* CLBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F1CAC29A163BE291006976CB /* CLBrowserCell.m */; };
+		F1F28F591641232700E1E034 /* CLFileReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1F28F581641232700E1E034 /* CLFileReaderViewController.m */; };
+		F1F28F6516413F7800E1E034 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1F28F6416413F7700E1E034 /* MessageUI.framework */; };
+		F1F28F6716413F9700E1E034 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1F28F6616413F9600E1E034 /* ImageIO.framework */; };
 		F1FE01DD163FD1640060BDB3 /* AGImagePickerController+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FE01C6163FD1640060BDB3 /* AGImagePickerController+Constants.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F1FE01DE163FD1640060BDB3 /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FE01C8163FD1640060BDB3 /* AGImagePickerController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F1FE01DF163FD1640060BDB3 /* AGIPC-Checkmark-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = F1FE01C9163FD1640060BDB3 /* AGIPC-Checkmark-iPad.png */; };
@@ -112,8 +114,6 @@
 		F168484F163D394900D2A34D /* SkyDriveIconWhite_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SkyDriveIconWhite_32x32.png; sourceTree = "<group>"; };
 		F18F10B516385BBE008AD713 /* CLCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLCacheManager.h; sourceTree = "<group>"; };
 		F18F10B616385BBE008AD713 /* CLCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLCacheManager.m; sourceTree = "<group>"; };
-		F1B4FDFA1639BF6D009CCD35 /* CLWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLWebViewController.h; sourceTree = "<group>"; };
-		F1B4FDFB1639BF6D009CCD35 /* CLWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLWebViewController.m; sourceTree = "<group>"; };
 		F1BD89251636A3E400DD93B3 /* Cloudy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cloudy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1BD89291636A3E400DD93B3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F1BD892B1636A3E400DD93B3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -202,6 +202,10 @@
 		F1C06C0B163D671A000E5DDE /* editButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editButton.png; sourceTree = "<group>"; };
 		F1CAC299163BE291006976CB /* CLBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLBrowserCell.h; sourceTree = "<group>"; };
 		F1CAC29A163BE291006976CB /* CLBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLBrowserCell.m; sourceTree = "<group>"; };
+		F1F28F571641232700E1E034 /* CLFileReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLFileReaderViewController.h; sourceTree = "<group>"; };
+		F1F28F581641232700E1E034 /* CLFileReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLFileReaderViewController.m; sourceTree = "<group>"; };
+		F1F28F6416413F7700E1E034 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		F1F28F6616413F9600E1E034 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		F1FE01C5163FD1640060BDB3 /* AGImagePickerController+Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AGImagePickerController+Constants.h"; sourceTree = "<group>"; };
 		F1FE01C6163FD1640060BDB3 /* AGImagePickerController+Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AGImagePickerController+Constants.m"; sourceTree = "<group>"; };
 		F1FE01C7163FD1640060BDB3 /* AGImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGImagePickerController.h; sourceTree = "<group>"; };
@@ -234,6 +238,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1F28F6716413F9700E1E034 /* ImageIO.framework in Frameworks */,
+				F1F28F6516413F7800E1E034 /* MessageUI.framework in Frameworks */,
 				F1FE01EE163FD2300060BDB3 /* AssetsLibrary.framework in Frameworks */,
 				F1BD89811636C30300DD93B3 /* Security.framework in Frameworks */,
 				F1BD897F1636C2C400DD93B3 /* libSDropboxSDK.a in Frameworks */,
@@ -267,6 +273,8 @@
 		F1BD89281636A3E400DD93B3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F1F28F6616413F9600E1E034 /* ImageIO.framework */,
+				F1F28F6416413F7700E1E034 /* MessageUI.framework */,
 				F1FE01ED163FD2300060BDB3 /* AssetsLibrary.framework */,
 				F1BD89801636C30300DD93B3 /* Security.framework */,
 				F1BD894F1636A4F100DD93B3 /* QuartzCore.framework */,
@@ -318,10 +326,10 @@
 				F1BD89671636ADE600DD93B3 /* CLDictionaryConvertor.m */,
 				F18F10B516385BBE008AD713 /* CLCacheManager.h */,
 				F18F10B616385BBE008AD713 /* CLCacheManager.m */,
-				F1B4FDFA1639BF6D009CCD35 /* CLWebViewController.h */,
-				F1B4FDFB1639BF6D009CCD35 /* CLWebViewController.m */,
 				F1CAC299163BE291006976CB /* CLBrowserCell.h */,
 				F1CAC29A163BE291006976CB /* CLBrowserCell.m */,
+				F1F28F571641232700E1E034 /* CLFileReaderViewController.h */,
+				F1F28F581641232700E1E034 /* CLFileReaderViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -658,7 +666,6 @@
 				F1BD8A0A1636C7EA00DD93B3 /* LiveOperation.m in Sources */,
 				F1BD8A0B1636C7EA00DD93B3 /* LiveOperationProgress.m in Sources */,
 				F18F10B716385BBE008AD713 /* CLCacheManager.m in Sources */,
-				F1B4FDFC1639BF6D009CCD35 /* CLWebViewController.m in Sources */,
 				F1CAC29B163BE291006976CB /* CLBrowserCell.m in Sources */,
 				F1FE01DD163FD1640060BDB3 /* AGImagePickerController+Constants.m in Sources */,
 				F1FE01DE163FD1640060BDB3 /* AGImagePickerController.m in Sources */,
@@ -668,6 +675,7 @@
 				F1FE01E9163FD1640060BDB3 /* AGIPCGridItem.m in Sources */,
 				F1FE01EA163FD1640060BDB3 /* AGIPCToolbarItem.m in Sources */,
 				F1FE01EB163FD1640060BDB3 /* ALAsset+AGIPC.m in Sources */,
+				F1F28F591641232700E1E034 /* CLFileReaderViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -744,7 +752,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cloudy/Cloudy-Prefix.pch";
-				HEADER_SEARCH_PATHS = "/Users/paragdulam/Projects/CloudSync/Cloudy/Cloudy/Utilities/DropboxSDK/Classes/**";
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Cloudy/Utilities/MWPhotoBrowser/MWPhotoBrowser\"/**",
+					"\"$(SRCROOT)/Cloudy/Utilities/DropboxSDK/Classes\"/**",
+				);
 				INFOPLIST_FILE = "Cloudy/Cloudy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
@@ -765,7 +776,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cloudy/Cloudy-Prefix.pch";
-				HEADER_SEARCH_PATHS = "/Users/paragdulam/Projects/CloudSync/Cloudy/Cloudy/Utilities/DropboxSDK/Classes/**";
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Cloudy/Utilities/MWPhotoBrowser/MWPhotoBrowser\"/**",
+					"\"$(SRCROOT)/Cloudy/Utilities/DropboxSDK/Classes\"/**",
+				);
 				INFOPLIST_FILE = "Cloudy/Cloudy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (

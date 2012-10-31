@@ -10,7 +10,6 @@
 #import "CLAccountsTableViewController.h"
 
 @interface CLBrowserTableViewController ()
-
 @end
 
 @implementation CLBrowserTableViewController
@@ -88,11 +87,14 @@
     [self setInputDictionary:inputDictionary];
 }
 
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 
 
@@ -438,7 +440,6 @@
                                     data:(NSData *)receivedData
                                operation:(LiveDownloadOperation *)operation
 {
-    
 }
 
 
@@ -467,7 +468,8 @@
     } else if ([object isKindOfClass:[NSDictionary class]]) {
         NSDictionary *data = (NSDictionary *)object;
         titleText = [data objectForKey:@"name"];
-        detailText = [data objectForKey:@"updated_time"];
+        NSNumber *size = [data objectForKey:@"size"];
+        detailText = [NSString stringWithFormat:@"%.2f MB",[size doubleValue]/(1024 * 1024)];
         if ([[data objectForKey:@"type"] isEqualToString:@"folder"] || [[data objectForKey:@"type"] isEqualToString:@"album"]) {
             cellImage = [UIImage imageNamed:@"folder.png"];
         } else if ([[data objectForKey:@"type"] isEqualToString:@"photo"]) {
@@ -475,7 +477,7 @@
         }
         if (!titleText) {
             titleText = [data objectForKey:@"filename"];
-            detailText = [[data objectForKey:@"lastModifiedDate"] description];
+            detailText = [data objectForKey:@"humanReadableSize"];
             if ([[data objectForKey:@"isDirectory"] boolValue]) {
                 cellImage = [UIImage imageNamed:@"folder.png"];
             } else if ([[data objectForKey:@"thumbnailExists"] boolValue]) {
@@ -525,16 +527,14 @@
                     [self.navigationController pushViewController:browserViewController animated:YES];
                     [browserViewController setInputDictionary:inputDict];
                 } else {
-                    NSMutableDictionary *inputDict = [[NSMutableDictionary alloc] init];
-                    [inputDict setObject:[metaData objectForKey:@"path"] forKey:FILE_INFO];
-                    [inputDict setObject:[NSNumber numberWithInteger:DROPBOX]
-                                  forKey:VIEW_TYPE_STRING];
-                    [inputDict setObject:[metaData  objectForKey:@"filename"]
-                                  forKey:@"TITLE"];
+                    NSDictionary *metaData = [tableData objectAtIndex:indexPath.row];
 
-                    CLWebViewController *webViewController = [[CLWebViewController alloc] init];
-                    [self.navigationController pushViewController:webViewController animated:YES];
-                    [webViewController setInputDictionary:inputDict];
+                    if ([[metaData objectForKey:@"thumbnailExists"] boolValue]) {
+                        
+                    } else {
+                        CLFileReaderViewController *fileReaderViewController = [[CLFileReaderViewController alloc] initWithFileMetaData:metaData ForViewType:DROPBOX];
+                        [self.navigationController pushViewController:fileReaderViewController animated:YES];
+                    }
                 }
             }
                 break;
@@ -555,18 +555,8 @@
                     [self.navigationController pushViewController:browserViewController animated:YES];
                     [browserViewController setInputDictionary:inputDict];
                 } else {
-                    NSMutableDictionary *inputDict = [[NSMutableDictionary alloc] init];
-//                    [inputDict setObject:[NSString stringWithFormat:@"%@/content",[selectedDirectory objectForKey:@"id"]] forKey:FILE_INFO];
-                    [inputDict setObject:[selectedDirectory objectForKey:@"source"] forKey:FILE_INFO];
-                    [inputDict setObject:[NSNumber numberWithInteger:SKYDRIVE]
-                                  forKey:VIEW_TYPE_STRING];
-                    [inputDict setObject:[selectedDirectory  objectForKey:@"name"]
-                                  forKey:@"TITLE"];
-
-                    
-                    CLWebViewController *webViewController = [[CLWebViewController alloc] init];
-                    [self.navigationController pushViewController:webViewController animated:YES];
-                    [webViewController setInputDictionary:inputDict];
+                    CLFileReaderViewController *fileReaderViewController = [[CLFileReaderViewController alloc] initWithFileMetaData:selectedDirectory ForViewType:SKYDRIVE];
+                    [self.navigationController pushViewController:fileReaderViewController animated:YES];
                 }
             }
                 break;

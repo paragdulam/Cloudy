@@ -20,6 +20,7 @@
         [self addSubview:backgroundImageView];
         [self sendSubviewToBack:backgroundImageView];
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.imageView.backgroundColor = [UIColor clearColor];
         self.textLabel.textColor = [UIColor whiteColor];
         self.textLabel.backgroundColor = [UIColor clearColor];
         
